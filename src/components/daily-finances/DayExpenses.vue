@@ -7,7 +7,12 @@
       </button>
     </div>
     <keep-alive>
-      <component :is="currentComponent" @new-expense="addExpense" />
+      <component
+        :is="currentComponent"
+        @new-expense="addExpense"
+        @delete-item="keyIncrement"
+        :key="componentKey"
+      />
     </keep-alive>
   </section>
 </template>
@@ -35,6 +40,7 @@ export default {
   },
   data() {
     return {
+      componentKey: 0,
       currentComponent: 'DayList',
       toggleButtonName: 'Add New Expense',
       buttonClass: 'expense',
@@ -47,15 +53,21 @@ export default {
         this.currentComponent = 'DayList';
         this.toggleButtonName = 'Add New Expense';
         this.buttonClass = 'expense';
+        this.componentKey += 1;
       } else {
         this.currentComponent = 'AddNewExpense';
         this.toggleButtonName = 'Back to List';
         this.buttonClass = 'back-to-list';
+        this.componentKey += 1;
       }
+    },
+    keyIncrement() {
+      this.componentKey += 1;
     },
     addExpense(description, amount, checkbox) {
       const that = this;
       const expense = {
+        id: Math.random(),
         date: `${that.month + 1} ${that.day}, ${that.year}`,
         name: description,
         price: amount,
@@ -65,9 +77,9 @@ export default {
       const obj = {
         [this.year]: {
           [this.month]: {
-            [this.day]: [expense]
-          }
-        }  
+            [this.day]: [expense],
+          },
+        },
       };
 
       const allExpensesExist = localStorage.getItem('allExpenses');
@@ -80,10 +92,18 @@ export default {
 
       if (Object.prototype.hasOwnProperty.call(a, this.year) === false) {
         a[this.year] = obj[this.year];
-      } else if (Object.prototype.hasOwnProperty.call(a[this.year], this.month) === false) {
+      } else if (
+        Object.prototype.hasOwnProperty.call(a[this.year], this.month) === false
+      ) {
         a[this.year][this.month] = obj[this.year][this.month];
-      } else if (Object.prototype.hasOwnProperty.call(a[this.year][this.month], this.day) === false) {
-        a[this.year][this.month][this.day] = obj[this.year][this.month][this.day];
+      } else if (
+        Object.prototype.hasOwnProperty.call(
+          a[this.year][this.month],
+          this.day
+        ) === false
+      ) {
+        a[this.year][this.month][this.day] =
+          obj[this.year][this.month][this.day];
       } else {
         a[this.year][this.month][this.day].unshift(expense);
       }

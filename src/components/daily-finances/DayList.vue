@@ -1,12 +1,19 @@
 <template>
   <base-card>
     <div class="item" v-for="(item, index) in dayExpensesArr" :key="index">
-      <i class="fa-solid fa-circle-xmark delete-icon"></i>
+      <i
+        v-if="dayExpensesArr[index].name !== 'Nothing here'"
+        class="fa-solid fa-circle-xmark delete-icon"
+        @click="deleteItem(item.id)"
+      ></i>
       <div class="item-info">
         <p>{{ item.name }}</p>
-        <p>US$ {{ item.price }}</p>
+        <p v-if="dayExpensesArr[index].price !== ''">US$ {{ item.price }}</p>
       </div>
-      <input type="checkbox" />
+      <input
+        v-if="dayExpensesArr[index].name !== 'Nothing here'"
+        type="checkbox"
+      />
     </div>
   </base-card>
 </template>
@@ -29,18 +36,36 @@ export default {
 
       const allExpenses = JSON.parse(localStorage.getItem('allExpenses'));
 
-      if (allExpenses === null) {
-        const arr = [{ name: '. . . Add a New Expense 👆', price: '' }];
+      const dayExpenses = allExpenses[this.year][this.month][this.day];
+
+      if (
+        allExpenses === null ||
+        dayExpenses === undefined ||
+        dayExpenses.length === 0
+      ) {
+        const arr = [{ name: 'Nothing here', price: '' }];
         return arr;
       }
-
-      const dayExpenses = allExpenses[this.year][this.month][this.day];
 
       for (let i = 0; i < dayExpenses.length; i++) {
         expensesArr.unshift(dayExpenses[i]);
       }
 
       return expensesArr;
+    },
+  },
+  methods: {
+    deleteItem(id) {
+      const allExpenses = JSON.parse(localStorage.getItem('allExpenses'));
+
+      const i = allExpenses[this.year][this.month][this.day].findIndex(
+        (item) => item.id === id
+      );
+      allExpenses[this.year][this.month][this.day].splice(i, 1);
+
+      localStorage.setItem('allExpenses', JSON.stringify(allExpenses));
+
+      this.$emit('delete-item');
     },
   },
 };
