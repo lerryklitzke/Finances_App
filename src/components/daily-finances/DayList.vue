@@ -7,12 +7,15 @@
         @click="deleteItem(item.id)"
       ></i>
       <div class="item-info">
-        <p>{{ item.name }}</p>
+        <p :class="item.paid === true ? 'paid' : ''"
+        >{{ item.name }}
+        </p>
         <p v-if="dayExpensesArr[index].price !== ''">US$ {{ item.price }}</p>
       </div>
       <input
         v-if="dayExpensesArr[index].name !== 'Nothing here'"
         type="checkbox"
+        @click="paid(item.id, item.price)"
       />
     </div>
   </base-card>
@@ -21,6 +24,11 @@
 <script>
 export default {
   inject: ['selectedDay', 'selectedMonth', 'selectedYear'],
+  data() {
+    return {
+
+    };
+  },
   computed: {
     day() {
       return this.selectedDay();
@@ -36,16 +44,18 @@ export default {
 
       const allExpenses = JSON.parse(localStorage.getItem('allExpenses'));
 
-      const dayExpenses = allExpenses[this.year][this.month][this.day];
-
       if (
         allExpenses === null ||
-        dayExpenses === undefined ||
-        dayExpenses.length === 0
+        allExpenses[this.year] === undefined ||
+        allExpenses[this.year][this.month] === undefined ||
+        allExpenses[this.year][this.month][this.day] === undefined ||
+        allExpenses[this.year][this.month][this.day].length === 0
       ) {
         const arr = [{ name: 'Nothing here', price: '' }];
         return arr;
       }
+
+      const dayExpenses = allExpenses[this.year][this.month][this.day];
 
       for (let i = 0; i < dayExpenses.length; i++) {
         expensesArr.unshift(dayExpenses[i]);
@@ -66,6 +76,26 @@ export default {
       localStorage.setItem('allExpenses', JSON.stringify(allExpenses));
 
       this.$emit('delete-item');
+    },
+    paid(id, price) {
+      const allExpenses = JSON.parse(localStorage.getItem('allExpenses'));
+      const dayExpensesArr = allExpenses[this.year][this.month][this.day];
+      const expenseIndex = dayExpensesArr.findIndex((item) => item.id === id);
+      const newArr = [];
+      newArr.push(dayExpensesArr[expenseIndex]);
+      newArr[0].paid = !newArr[0].paid;
+
+      if(newArr[0].paid === true) {
+        allExpenses[this.year][this.month][this.day].splice(expenseIndex, 1);
+        allExpenses[this.year][this.month][this.day].unshift(newArr[0]);
+      } else {
+        allExpenses[this.year][this.month][this.day].splice(expenseIndex, 1);
+        allExpenses[this.year][this.month][this.day].push(newArr[0]);
+      }
+
+      this.$emit('paid-item', price);
+
+      localStorage.setItem('allExpenses', JSON.stringify(allExpenses));
     },
   },
 };
@@ -96,5 +126,9 @@ input {
 .delete-icon {
   color: #aaa;
   cursor: pointer;
+}
+
+.paid {
+  text-decoration: line-through;
 }
 </style>

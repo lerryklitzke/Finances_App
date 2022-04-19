@@ -11,6 +11,7 @@
         :is="currentComponent"
         @new-expense="addExpense"
         @delete-item="keyIncrement"
+        @paid-item="keyIncrement"
         :key="componentKey"
       />
     </keep-alive>
