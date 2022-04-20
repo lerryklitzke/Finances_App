@@ -8,10 +8,12 @@
     </div>
     <keep-alive>
       <component
+        class="max-height"
         :is="currentComponent"
         @new-expense="addExpense"
         @delete-item="keyIncrement"
         @paid-item="keyIncrement"
+        v-bind="$attrs"
         :key="componentKey"
       />
     </keep-alive>
@@ -65,7 +67,7 @@ export default {
     keyIncrement() {
       this.componentKey += 1;
     },
-    addExpense(description, amount, checkbox) {
+    addExpense(amount, checkbox, description) {
       const that = this;
       const expense = {
         id: Math.random(),
@@ -129,5 +131,11 @@ export default {
 
 .back-to-list {
   background: #00a86b;
+}
+
+.max-height {
+  max-height: 265px;
+  overflow: scroll;
+  overflow-x: hidden;
 }
 </style>

@@ -4,9 +4,9 @@
       @submit.prevent="
         $emit(
           'new-expense',
-          this.$refs.description.value,
           this.$refs.amount.value,
-          this.checkbox
+          this.checkbox,
+          this.$refs.description.value
         );
         submitted()
       ">

@@ -58,7 +58,11 @@ export default {
       const dayExpenses = allExpenses[this.year][this.month][this.day];
 
       for (let i = 0; i < dayExpenses.length; i++) {
-        expensesArr.unshift(dayExpenses[i]);
+        if (dayExpenses[i].paid === false) {
+          expensesArr.unshift(dayExpenses[i]);
+        } else {
+          expensesArr.push(dayExpenses[i]);
+        }
       }
 
       return expensesArr;
@@ -85,7 +89,7 @@ export default {
       newArr.push(dayExpensesArr[expenseIndex]);
       newArr[0].paid = !newArr[0].paid;
 
-      if(newArr[0].paid === true) {
+      if(newArr[0].paid === false) {
         allExpenses[this.year][this.month][this.day].splice(expenseIndex, 1);
         allExpenses[this.year][this.month][this.day].unshift(newArr[0]);
       } else {

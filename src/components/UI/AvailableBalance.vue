@@ -7,7 +7,7 @@
     <base-card>
       <template #default>
         <div id="balance-bar">
-          <div id="available-balance"></div>
+          <div id="available-balance" :style="{width: percentual + '%'}"></div>
         </div>
       </template>
     </base-card>
@@ -62,7 +62,7 @@ span {
 
 #available-balance {
   background: #00a86b;
-  width: 75%;
+  max-width: 100%;
   height: 100%;
 }
 </style>
