@@ -23,11 +23,9 @@ export default {
       default: 'Today'
     },
     balance: {
-      type: Number,
       required: true
     },
     percentual: {
-      type: Number,
       required: true
     }
   }

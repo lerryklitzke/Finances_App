@@ -6,10 +6,8 @@
         class="fa-solid fa-circle-xmark delete-icon"
         @click="deleteItem(item.id)"
       ></i>
-      <div class="item-info">
-        <p :class="item.paid === true ? 'paid' : ''"
-        >{{ item.name }}
-        </p>
+      <div class="item-info" :class="item.paid === true ? 'paid' : ''">
+        <p>{{ item.name }}</p>
         <p v-if="dayExpensesArr[index].price !== ''">US$ {{ item.price }}</p>
       </div>
       <input
@@ -75,11 +73,11 @@ export default {
       const i = allExpenses[this.year][this.month][this.day].findIndex(
         (item) => item.id === id
       );
+      this.$emit('delete-item', allExpenses[this.year][this.month][this.day][i].price);
+
       allExpenses[this.year][this.month][this.day].splice(i, 1);
 
       localStorage.setItem('allExpenses', JSON.stringify(allExpenses));
-
-      this.$emit('delete-item');
     },
     paid(id, price) {
       const allExpenses = JSON.parse(localStorage.getItem('allExpenses'));
@@ -97,7 +95,7 @@ export default {
         allExpenses[this.year][this.month][this.day].push(newArr[0]);
       }
 
-      this.$emit('paid-item', price);
+      this.$emit('paid-item', price, newArr[0].paid);
 
       localStorage.setItem('allExpenses', JSON.stringify(allExpenses));
     },
@@ -134,5 +132,6 @@ input {
 
 .paid {
   text-decoration: line-through;
+  color: #aaa;
 }
 </style>
