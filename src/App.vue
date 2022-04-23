@@ -2,7 +2,7 @@
   <TheHeader />
   <main>
     <MonthOverview @selected-day="dayMonthYear" />
-    <DayOverview />
+    <DayOverview @new-income="adjustMonthBalance" />
   </main>
 </template>
 
@@ -23,6 +23,7 @@ export default {
       day: new Date().getDate(),
       month: new Date().getMonth(),
       year: new Date().getYear() + 1900,
+      incomeAmount: 0,
     };
   },
   provide() {
@@ -32,6 +33,7 @@ export default {
       selectedMonth: () => this.month,
       selectedYear: () => this.year,
       today: () => this.today,
+      incAmount: () => this.incomeAmount,
     };
   },
   computed: {
@@ -72,6 +74,9 @@ export default {
         this.date = selectedDate;
       }
     },
+    adjustMonthBalance(amount) {
+      this.incomeAmount = parseFloat(this.incomeAmount) + parseFloat(amount);
+    }
   },
 };
 </script>

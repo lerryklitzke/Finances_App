@@ -1,7 +1,7 @@
 <template>
   <section id="day-expenses">
     <div id="buttons">
-      <button>Go to Today</button>
+      <button class="btn-tertiary" @click="addIncome">Add Income</button>
       <button :class="buttonClass" @click="toggleComponent">
         {{ toggleButtonName }}
       </button>
@@ -10,6 +10,7 @@
       <component
         class="max-height"
         :is="currentComponent"
+        @new-income="toggleComponent"
         @new-expense="addExpense"
         @delete-item="keyIncrement"
         @paid-item="keyIncrement"
@@ -23,11 +24,13 @@
 <script>
 import DayList from './DayList.vue';
 import AddNewExpense from './AddNewExpense.vue';
+import AddNewIncome from './AddNewIncome.vue'
 
 export default {
   components: {
     DayList,
     AddNewExpense,
+    AddNewIncome,
   },
   inject: ['selectedDay', 'selectedMonth', 'selectedYear'],
   computed: {
@@ -57,7 +60,13 @@ export default {
         this.toggleButtonName = 'Add New Expense';
         this.buttonClass = 'expense';
         this.componentKey += 1;
-      } else {
+      } else if (this.currentComponent === 'AddNewIncome') {
+        const that = this;
+        setTimeout(() => {
+          that.currentComponent = 'DayList';
+          that.componentKey += 1;
+        }, 1000);
+      }  else {
         this.currentComponent = 'AddNewExpense';
         this.toggleButtonName = 'Back to List';
         this.buttonClass = 'back-to-list';
@@ -113,6 +122,10 @@ export default {
 
       localStorage.setItem('allExpenses', JSON.stringify(a));
     },
+    addIncome() {
+      this.currentComponent = 'AddNewIncome';
+      this.componentKey += 1;
+    }
   },
 };
 </script>
@@ -125,12 +138,16 @@ export default {
   margin-bottom: 1rem;
 }
 
+.btn-tertiary {
+  background: #00a86b;
+}
+
 .expense {
   background: #ff2a2a;
 }
 
 .back-to-list {
-  background: #00a86b;
+  background: #008b8b;
 }
 
 .max-height {

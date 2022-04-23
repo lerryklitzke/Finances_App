@@ -1,8 +1,8 @@
 <template>
   <section>
     <available-balance
-      title="Month Balance"
-      :balance="currentBalance"
+      title="Balance"
+      :balance="incomeAmount"
       :percentual="currentPercentual"
     ></available-balance>
     <month-calendar v-bind="$attrs"></month-calendar>
@@ -18,10 +18,19 @@ export default {
     AvailableBalance,
     MonthCalendar,
   },
+  inject: ['incAmount'],
+  computed: {
+    incomeDescription() {
+      return this.incDescription();
+    },
+    incomeAmount() {
+      return this.incAmount();
+    }
+  },
   data() {
     return {
-      currentBalance: 7000,
-      currentPercentual: 75,
+      currentBalance: 0,
+      currentPercentual: 100,
     };
   },
   methods: {
