@@ -2,14 +2,19 @@
   <TheHeader />
   <main>
     <MonthOverview @selected-day="dayMonthYear" />
-    <DayOverview @new-income="adjustMonthBalance" />
+    <DayOverview
+      @new-income="adjustBalance"
+      @paid-item="paidItem"
+      @new-expense="subtractFromBalanceB"
+      @delete-item="addToBalance"
+    />
   </main>
 </template>
 
 <script>
-import TheHeader from "./components/layouts/TheHeader.vue";
-import MonthOverview from "./components/monthly-finances/MonthOverview.vue";
-import DayOverview from "./components/daily-finances/DayOverview.vue";
+import TheHeader from './components/layouts/TheHeader.vue';
+import MonthOverview from './components/monthly-finances/MonthOverview.vue';
+import DayOverview from './components/daily-finances/DayOverview.vue';
 
 export default {
   components: {
@@ -19,21 +24,23 @@ export default {
   },
   data() {
     return {
-      date: "Today",
+      date: 'Today',
       day: new Date().getDate(),
       month: new Date().getMonth(),
       year: new Date().getYear() + 1900,
       incomeAmount: 0,
+      totalAmount: 0,
     };
   },
   provide() {
     return {
       selectedDate: () => this.date, // Month Day, Year
-      selectedDay: () => this.day, 
+      selectedDay: () => this.day,
       selectedMonth: () => this.month,
       selectedYear: () => this.year,
       today: () => this.today,
       incAmount: () => this.incomeAmount,
+      totAmount: () => this.totalAmount,
     };
   },
   computed: {
@@ -48,18 +55,18 @@ export default {
   methods: {
     dayMonthYear(month, day, year) {
       const monthsArr = [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December',
       ];
 
       this.day = day;
@@ -69,13 +76,35 @@ export default {
       const selectedDate = `${monthsArr[month]} ${day}, ${year}`;
 
       if (`${month} ${day}, ${year}` === this.today) {
-        this.date = "Today";
+        this.date = 'Today';
       } else {
         this.date = selectedDate;
       }
     },
-    adjustMonthBalance(amount) {
+    // new income
+    adjustBalance(amount) {
       this.incomeAmount = parseFloat(this.incomeAmount) + parseFloat(amount);
+      this.totalAmount = parseFloat(this.totalAmount) + parseFloat(amount);
+    },
+    // paid
+    paidItem(amount, paid) {
+      if (paid === true) {
+        this.incomeAmount = this.incomeAmount - amount;
+      } else {
+        this.incomeAmount = parseFloat(this.incomeAmount) + parseFloat(amount);
+      }
+    },
+    // new item
+    subtractFromBalanceB(amount, paid) {
+      if (paid === true) {
+        this.incomeAmount = this.incomeAmount - amount;
+      }
+    },
+    // delete item
+    addToBalance(amount, paid) {
+      if (paid === true) {
+        this.incomeAmount = parseFloat(this.incomeAmount) + parseFloat(amount);
+      }
     }
   },
 };

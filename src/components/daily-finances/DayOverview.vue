@@ -58,13 +58,19 @@ export default {
   },
   methods: {
     // when the expense is deleted from the list
-    deleteItem(amount) {
-      this.itemsSum = parseFloat(this.itemsSum) - amount;
-      this.currentBalance = parseFloat(this.currentBalance) - amount;
-      this.currentPercentual = (
-        (100 * parseFloat(this.currentBalance)) /
-        parseFloat(this.itemsSum)
-      ).toFixed(1);
+    deleteItem(amount, paid, length) {
+      if (paid === false) {
+        this.itemsSum = parseFloat(this.itemsSum) - amount;
+        this.currentBalance = parseFloat(this.currentBalance) - amount;
+
+        this.currentPercentual = (
+          (100 * parseFloat(this.currentBalance)) /
+          parseFloat(this.itemsSum)
+        ).toFixed(1);
+      }
+      if (length === 1) {
+        this.currentPercentual = 100;
+      }
     },
     // for checked
     itemCheck(amount, paid) {

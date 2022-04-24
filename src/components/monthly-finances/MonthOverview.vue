@@ -18,26 +18,20 @@ export default {
     AvailableBalance,
     MonthCalendar,
   },
-  inject: ['incAmount'],
+  inject: ['incAmount', 'totAmount'],
   computed: {
-    incomeDescription() {
-      return this.incDescription();
-    },
     incomeAmount() {
       return this.incAmount();
-    }
+    },
+    totalAmount() {
+      return this.totAmount();
+    },
   },
   data() {
     return {
-      currentBalance: 0,
       currentPercentual: 100,
     };
   },
-  methods: {
-    test(month, day, year) {
-      this.anything = `${month} ${day}, ${year}`;
-    }
-  }
 };
 </script>
 

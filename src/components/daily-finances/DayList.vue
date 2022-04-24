@@ -23,9 +23,7 @@
 export default {
   inject: ['selectedDay', 'selectedMonth', 'selectedYear'],
   data() {
-    return {
-
-    };
+    return {};
   },
   computed: {
     day() {
@@ -73,7 +71,12 @@ export default {
       const i = allExpenses[this.year][this.month][this.day].findIndex(
         (item) => item.id === id
       );
-      this.$emit('delete-item', allExpenses[this.year][this.month][this.day][i].price);
+      this.$emit(
+        'delete-item',
+        allExpenses[this.year][this.month][this.day][i].price,
+        allExpenses[this.year][this.month][this.day][i].paid,
+        allExpenses[this.year][this.month][this.day].length,
+      );
 
       allExpenses[this.year][this.month][this.day].splice(i, 1);
 
@@ -87,7 +90,7 @@ export default {
       newArr.push(dayExpensesArr[expenseIndex]);
       newArr[0].paid = !newArr[0].paid;
 
-      if(newArr[0].paid === false) {
+      if (newArr[0].paid === false) {
         allExpenses[this.year][this.month][this.day].splice(expenseIndex, 1);
         allExpenses[this.year][this.month][this.day].unshift(newArr[0]);
       } else {
