@@ -22,11 +22,18 @@
           ></div>
           <div
             class="calendar-cell selected-day"
-            :class="this.todayIs === `${this.currentMonth} ${day}, ${this.currentYear}` ? 'today' : ''"
+            :class="
+              [this.todayIs ===
+              `${this.currentMonth} ${day}, ${this.currentYear}`
+                ? 'today'
+                : '',
+              this.clickedDay == day ? 'clicked' : '']
+            "
             :key="index"
             v-for="(day, index) in days"
             @click="
-              $emit('selected-day', this.currentMonth, day, this.currentYear)
+              [$emit('selected-day', this.currentMonth, day, this.currentYear),
+              pickedDay(day)]
             "
           >
             {{ day }}
@@ -43,10 +50,11 @@ export default {
     return {
       currentYear: new Date().getYear() + 1900,
       currentMonth: new Date().getMonth(),
+      clickedDay: null,
     };
   },
-  inject: ["today"],
-  emits: ["selected-day"],
+  inject: ['today'],
+  emits: ['selected-day'],
   computed: {
     todayIs() {
       return this.today();
@@ -82,18 +90,18 @@ export default {
     },
     month() {
       const months = [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December',
       ];
       return months[this.currentMonth];
     },
@@ -113,6 +121,9 @@ export default {
       }
       this.currentMonth++;
     },
+    pickedDay(d) {
+      this.clickedDay = d;
+    }
   },
 };
 </script>
@@ -161,6 +172,15 @@ export default {
 }
 
 .selected-day:hover {
+  background: rgba(0, 139, 139, 0.6);
+  border-radius: 5px;
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
+  transition: 0.2s ease-in;
+}
+
+.clicked {
   background: rgba(0, 139, 139, 0.8);
   border-radius: 5px;
   cursor: pointer;

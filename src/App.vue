@@ -30,6 +30,7 @@ export default {
       year: new Date().getYear() + 1900,
       incomeAmount: 0,
       totalAmount: 0,
+      monthBalanceBar: 100,
     };
   },
   provide() {
@@ -41,6 +42,7 @@ export default {
       today: () => this.today,
       incAmount: () => this.incomeAmount,
       totAmount: () => this.totalAmount,
+      monthBalanceB: () => this.monthBalanceBar,
     };
   },
   computed: {
@@ -85,6 +87,9 @@ export default {
     adjustBalance(amount) {
       this.incomeAmount = parseFloat(this.incomeAmount) + parseFloat(amount);
       this.totalAmount = parseFloat(this.totalAmount) + parseFloat(amount);
+      this.monthBalanceBar =
+        parseFloat(this.incomeAmount * 100) /
+        parseFloat(this.totalAmount).toFixed(1);
     },
     // paid
     paidItem(amount, paid) {
@@ -93,19 +98,28 @@ export default {
       } else {
         this.incomeAmount = parseFloat(this.incomeAmount) + parseFloat(amount);
       }
+      this.monthBalanceBar =
+        parseFloat(this.incomeAmount * 100) /
+        parseFloat(this.totalAmount).toFixed(1);
     },
     // new item
     subtractFromBalanceB(amount, paid) {
       if (paid === true) {
         this.incomeAmount = this.incomeAmount - amount;
+        this.monthBalanceBar =
+          parseFloat(this.incomeAmount * 100) /
+          parseFloat(this.totalAmount).toFixed(1);
       }
     },
     // delete item
     addToBalance(amount, paid) {
       if (paid === true) {
         this.incomeAmount = parseFloat(this.incomeAmount) + parseFloat(amount);
+        this.monthBalanceBar =
+          parseFloat(this.incomeAmount * 100) /
+          parseFloat(this.totalAmount).toFixed(1);
       }
-    }
+    },
   },
 };
 </script>

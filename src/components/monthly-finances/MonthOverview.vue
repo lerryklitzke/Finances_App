@@ -3,7 +3,7 @@
     <available-balance
       title="Balance"
       :balance="incomeAmount"
-      :percentual="currentPercentual"
+      :percentual="monthBalanceBar"
     ></available-balance>
     <month-calendar v-bind="$attrs"></month-calendar>
   </section>
@@ -18,19 +18,18 @@ export default {
     AvailableBalance,
     MonthCalendar,
   },
-  inject: ['incAmount', 'totAmount'],
+  inject: ['incAmount', 'totAmount', 'monthBalanceB'],
   computed: {
     incomeAmount() {
-      return this.incAmount();
+      const a = this.incAmount();
+      return Number(a);
     },
     totalAmount() {
       return this.totAmount();
     },
-  },
-  data() {
-    return {
-      currentPercentual: 100,
-    };
+    monthBalanceBar() {
+      return this.monthBalanceB();
+    }
   },
 };
 </script>

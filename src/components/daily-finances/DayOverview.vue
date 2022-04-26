@@ -62,12 +62,17 @@ export default {
       if (paid === false) {
         this.itemsSum = parseFloat(this.itemsSum) - amount;
         this.currentBalance = parseFloat(this.currentBalance) - amount;
-
-        this.currentPercentual = (
-          (100 * parseFloat(this.currentBalance)) /
-          parseFloat(this.itemsSum)
-        ).toFixed(1);
+      } else {
+        this.itemsSum = parseFloat(this.itemsSum) - amount;
+        this.currentBalance = this.currentBalance - amount;
+        this.currentBalance = parseFloat(this.currentBalance) + parseFloat(amount);
       }
+
+      this.currentPercentual = (
+        (100 * parseFloat(this.currentBalance)) /
+        parseFloat(this.itemsSum)
+      ).toFixed(1);
+
       if (length === 1) {
         this.currentPercentual = 100;
       }

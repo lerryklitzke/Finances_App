@@ -7,7 +7,10 @@
     <base-card>
       <template #default>
         <div id="balance-bar">
-          <div id="available-balance" :style="{width: percentual + '%'}"></div>
+          <div
+            :style="{width: percentual + '%'}"
+            :class="['available-balance', balance < 0 ? 'negative' : '']"
+          ></div>
         </div>
       </template>
     </base-card>
@@ -58,9 +61,13 @@ span {
   overflow: hidden;
 }
 
-#available-balance {
+.available-balance {
   background: #00a86b;
   max-width: 100%;
   height: 100%;
+}
+
+.negative {
+  background: #ff2a2a;
 }
 </style>
