@@ -103,6 +103,9 @@ export default {
       localStorage.setItem('allExpenses', JSON.stringify(allExpenses));
     },
   },
+  mounted() {
+    
+  }
 };
 </script>
 
