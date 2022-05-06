@@ -165,10 +165,10 @@ export default {
 }
 
 .calendar-cell {
-  height: 2rem;
+  height: 2.2rem;
   text-align: center;
-  padding-top: 4px;
-  color: #333;
+  padding-top: 6px;
+  color: #444;
 }
 
 .today {
@@ -186,6 +186,7 @@ export default {
 .week-day {
   font-weight: 400;
   color: #666;
+  font-size: 1rem;
 }
 
 .selected-day:hover {
