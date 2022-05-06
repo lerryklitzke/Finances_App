@@ -26,8 +26,19 @@
               [this.todayIs ===
               `${this.currentMonth} ${day}, ${this.currentYear}`
                 ? 'today'
-                : '',
-              this.clickedDay == day ? 'clicked' : '']
+                : ''
+              ,
+              day < this.thisDay && 
+              this.currentMonth <= this.thisMonth &&
+              this.currentYear <= this.thisYear ||
+              this.currentMonth < this.thisMonth &&
+              this.currentYear <= this.thisYear ||
+              this.currentYear < this.thisYear ? 'passed-day' : ''
+              ,
+              this.clickedDay === day &&
+              this.currentMonth === this.thisMonth &&
+              this.currentYear === this.thisYear ? 'clicked' : ''
+              ]
             "
             :key="index"
             v-for="(day, index) in days"
@@ -50,6 +61,9 @@ export default {
     return {
       currentYear: new Date().getYear() + 1900,
       currentMonth: new Date().getMonth(),
+      thisYear: new Date().getYear() + 1900,
+      thisMonth: new Date().getMonth(),
+      thisDay: new Date().getDate(),
       clickedDay: null,
     };
   },
@@ -147,12 +161,14 @@ export default {
   grid-template-columns: repeat(7, 1fr);
   grid-template-rows: repeat(5, 1fr);
   padding: 0.8rem;
+  font-weight: 500;
 }
 
 .calendar-cell {
   height: 2rem;
   text-align: center;
   padding-top: 4px;
+  color: #333;
 }
 
 .today {
@@ -168,7 +184,8 @@ export default {
 }
 
 .week-day {
-  font-weight: bold;
+  font-weight: 400;
+  color: #666;
 }
 
 .selected-day:hover {
@@ -203,5 +220,9 @@ export default {
   color: white;
   background: rgba(256, 256, 256, 0.1);
   border-radius: 50%;
+}
+
+.passed-day {
+  color: #aaa;
 }
 </style>

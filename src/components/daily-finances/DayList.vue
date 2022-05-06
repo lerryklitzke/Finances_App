@@ -104,7 +104,10 @@ export default {
     },
   },
   mounted() {
-    
+    // fetch('http://localhost:3000')
+    //   .then(a => a.json())
+    //   .then(data => this.itemsArr = data)
+    //   .catch(err => console.log(err.message))
   }
 };
 </script>
